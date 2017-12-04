@@ -452,6 +452,8 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lib)
 
 macro(cmsat_add_public_header LIBTARGET HEADER)
+    target_sources(${LIBTARGET} PUBLIC $<BUILD_INTERFACE:${HEADER}>) ## make ide happy
+
     get_target_property(EXISTING_PUBLIC_HEADERS ${LIBTARGET} PUBLIC_HEADER)
     if(EXISTING_PUBLIC_HEADERS)
         list(APPEND EXISTING_PUBLIC_HEADERS "${HEADER}")
@@ -489,7 +491,7 @@ endif()
 if(NOT Boost_FOUND)
     set(ONLY_SIMPLE ON)
     message(STATUS "Only building executable with few command-line options because the boost program_options library were not available")
-    set(ENABLE_TESTING OFF)
+##    set(ENABLE_TESTING OFF)
 endif()
 
 # -----------------------------------------------------------------------------

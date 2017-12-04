@@ -19,27 +19,27 @@
 # THE SOFTWARE.
 
 
-find_program(LIT_TOOL
-    lit
-    DOC "Path to lit tool"
-)
-
-if(NOT LIT_TOOL)
-    message(FATAL_ERROR "Could not find 'lit' tool. You need to install it by e.g. 'pip install lit' If it's already installed, set LIT_TOOL to the full path for lit")
-endif()
-
-# Checking absolute path because if(EXISTS ...) behaviour only well
-# defined if path is absolute
-IF(NOT IS_ABSOLUTE "${LIT_TOOL}")
-    message(FATAL_ERROR "LIT_TOOL must be set to an absolute PATH")
-endif()
-
-if(NOT EXISTS "${LIT_TOOL}")
-    # Can happen if users environment changes after initial configure
-    message(FATAL_ERROR "LIT_TOOL is set but the path does not seem to exist. Try deleting the LIT_TOOL cache variable and reconfiguring")
-endif()
-
-set(LIT_ARGS -v CACHE STRING "Arguments to pass to lit")
+#find_program(LIT_TOOL
+#    lit
+#    DOC "Path to lit tool"
+#)
+#
+#if(NOT LIT_TOOL)
+#    message(FATAL_ERROR "Could not find 'lit' tool. You need to install it by e.g. 'pip install lit' If it's already installed, set LIT_TOOL to the full path for lit")
+#endif()
+#
+## Checking absolute path because if(EXISTS ...) behaviour only well
+## defined if path is absolute
+#IF(NOT IS_ABSOLUTE "${LIT_TOOL}")
+#    message(FATAL_ERROR "LIT_TOOL must be set to an absolute PATH")
+#endif()
+#
+#if(NOT EXISTS "${LIT_TOOL}")
+#    # Can happen if users environment changes after initial configure
+#    message(FATAL_ERROR "LIT_TOOL is set but the path does not seem to exist. Try deleting the LIT_TOOL cache variable and reconfiguring")
+#endif()
+#
+#set(LIT_ARGS -v CACHE STRING "Arguments to pass to lit")
 
 # -----------------------------------------------------------------------------
 # Find GTest library which will be used to drive tests
@@ -80,16 +80,16 @@ endif()
 
 # -----------------------------------------------------------------------------
 
-add_subdirectory(${PROJECT_SOURCE_DIR}/utils/cnf-utils cnf-utils)
-add_subdirectory(${PROJECT_SOURCE_DIR}/utils/drat-trim drat-trim)
-add_subdirectory(${PROJECT_SOURCE_DIR}/utils/sha1-sat sha1-sat)
-add_subdirectory(${PROJECT_SOURCE_DIR}/utils/minisat minisat)
+#add_subdirectory(${PROJECT_SOURCE_DIR}/utils/cnf-utils cnf-utils)
+#add_subdirectory(${PROJECT_SOURCE_DIR}/utils/drat-trim drat-trim)
+#add_subdirectory(${PROJECT_SOURCE_DIR}/utils/sha1-sat sha1-sat)
+#add_subdirectory(${PROJECT_SOURCE_DIR}/utils/minisat minisat)
 
 
-if (PYTHON_EXECUTABLE AND ZLIB_FOUND AND NOT STATS_NEEDED)
-    add_subdirectory(${PROJECT_SOURCE_DIR}/utils/minisat_only_elim_and_subsume minisat_only_elim_and_subsume)
-    add_subdirectory(simp-checks)
-endif()
+#if (PYTHON_EXECUTABLE AND ZLIB_FOUND AND NOT STATS_NEEDED)
+#    add_subdirectory(${PROJECT_SOURCE_DIR}/utils/minisat_only_elim_and_subsume minisat_only_elim_and_subsume)
+#    add_subdirectory(simp-checks)
+#endif()
 
 
 include_directories(
