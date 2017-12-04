@@ -158,6 +158,10 @@ target_link_libraries(libcryptominisat5
     LINK_PUBLIC ${CMAKE_THREAD_LIBS_INIT}
 )
 
+target_include_directories(libcryptominisat5 PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>)
+
+
 if (NOT WIN32)
     set_target_properties(libcryptominisat5 PROPERTIES
         OUTPUT_NAME cryptominisat5
@@ -173,6 +177,7 @@ else()
         SOVERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
     )
 endif()
+
 
 if (IPASIR)
     if (NOT STATICCOMPILE)
