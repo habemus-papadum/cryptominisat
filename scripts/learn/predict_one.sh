@@ -31,10 +31,10 @@ echo "Predicting file $1"
 ./tests/drat-trim/drat-trim ${FNAME} ${OUTDIR}/drat_out -l ${OUTDIR}/lemmas
 
 # add lemma indices that were good
-./add_lemma_ind.py ${OUTDIR}/data.sqlite ${OUTDIR}/lemmas
+add_lemma_ind.py ${OUTDIR}/data.sqlite ${OUTDIR}/lemmas
 
 # run prediction on SQLite database
-./predict.py ${OUTDIR}/data.sqlite
+predict.py ${OUTDIR}/data.sqlite
 
 # generate DOT and display it
 dot -Tpng ${OUTDIR}/data.sqlite.tree.dot -o tree.png

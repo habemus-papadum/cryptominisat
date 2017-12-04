@@ -408,14 +408,17 @@ if (NOT NOZLIB AND NOT (STATICCOMPILE AND WIN32))
 endif()
 
 option(NOVALGRIND "Don't use valgrind" ON)
-find_package(Valgrind)
-if (VALGRIND_FOUND AND NOT NOVALGRIND)
-    message(STATUS "OK, Found Valgrind. Using valgrind client requests to mark freed clauses in pool as undefined")
-    add_definitions(-DUSE_VALGRIND)
-    include_directories(${VALGRIND_INCLUDE_DIR})
-else()
-    message(STATUS "Cannot find valgrind or it's disabled, we will not be able to mark memory pool objects as undefined")
+if (NOT NOVALGRIND)
+    find_package(Valgrind)
+    if (VALGRIND_FOUND AND NOT NOVALGRIND)
+        message(STATUS "OK, Found Valgrind. Using valgrind client requests to mark freed clauses in pool as undefined")
+        add_definitions(-DUSE_VALGRIND)
+        include_directories(${VALGRIND_INCLUDE_DIR})
+    else()
+        message(STATUS "Cannot find valgrind or it's disabled, we will not be able to mark memory pool objects as undefined")
+    endif()
 endif()
+
 
 # -----------------------------------------------------------------------------
 # Look for M4RI (for Gauss)
@@ -467,19 +470,20 @@ endmacro()
 # Look for python
 # -----------------------------------------------------------------------------
 option(ENABLE_PYTHON_INTERFACE "Enable Python interface" ON)
+if (ENABLE_PYTHON_INTERFACE)
+    find_package (PythonInterp 3)
+    find_package(PythonLibs 3)
 
-find_package (PythonInterp 3)
-find_package(PythonLibs 3)
+    if (NOT PYTHON_EXECUTABLE OR NOT PYTHON_LIBRARIES OR NOT PYTHON_INCLUDE_DIRS)
+        find_package (PythonInterp 2.7)
+        find_package(PythonLibs 2.7)
+    endif()
 
-if (NOT PYTHON_EXECUTABLE OR NOT PYTHON_LIBRARIES OR NOT PYTHON_INCLUDE_DIRS)
-    find_package (PythonInterp 2.7)
-    find_package(PythonLibs 2.7)
+    message(STATUS "PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}")
+    message(STATUS "PYTHON_LIBRARIES=${PYTHON_LIBRARIES}")
+    message(STATUS "PYTHON_INCLUDE_DIRS=${PYTHON_INCLUDE_DIRS}")
+    message(STATUS "PYTHONLIBS_VERSION_STRING=${PYTHONLIBS_VERSION_STRING}")
 endif()
-
-message(STATUS "PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}")
-message(STATUS "PYTHON_LIBRARIES=${PYTHON_LIBRARIES}")
-message(STATUS "PYTHON_INCLUDE_DIRS=${PYTHON_INCLUDE_DIRS}")
-message(STATUS "PYTHONLIBS_VERSION_STRING=${PYTHONLIBS_VERSION_STRING}")
 
 #command-line parsing executable needs boost program-options
 if(NOT Boost_FOUND)
@@ -534,8 +538,6 @@ if (ENABLE_TESTING)
     add_subdirectory(tests)
     add_subdirectory(scripts/fuzz)
 
-else()
-    message(WARNING "Testing is disabled")
 endif()
 
 if (ENABLE_PYTHON_INTERFACE)
